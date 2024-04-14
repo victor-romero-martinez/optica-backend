@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
   IsArray,
+  IsEnum,
   IsNotEmpty,
   IsNotEmptyObject,
   IsNumber,
@@ -11,6 +12,11 @@ import {
   IsUrl,
   ValidateNested,
 } from 'class-validator';
+
+enum Currency {
+  usd = 'usd',
+  pyg = 'pyg',
+}
 
 class Price {
   @ApiProperty()
@@ -28,7 +34,8 @@ class Price {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  currency: string;
+  @IsEnum(Currency)
+  currency: Currency;
 }
 
 export class CreateProductDto {
