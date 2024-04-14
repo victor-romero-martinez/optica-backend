@@ -42,10 +42,14 @@ export class CategoriesController {
     description: 'All categories.',
     type: [Category],
   })
-  @ApiQuery({ name: 'products', required: false })
+  @ApiQuery({
+    name: 'products',
+    required: false,
+    description: '1 for true, false other values.',
+  })
   @Get()
   findAll(@Query('products') products: string) {
-    return this.categoriesService.findAll(products);
+    return this.categoriesService.findAll(+products);
   }
 
   @ApiOperation({ summary: 'Get a category by id.' })

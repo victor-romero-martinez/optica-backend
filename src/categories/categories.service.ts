@@ -19,9 +19,10 @@ export class CategoriesService {
   }
 
   /** get all categories */
-  async findAll(products: string) {
+  async findAll(products: number) {
+    const showRelations = products === 1 ? true : false;
     return await this.categoryRepo.find({
-      relations: { products: !!products },
+      relations: { products: showRelations },
       select: {
         products: {
           id: true,
