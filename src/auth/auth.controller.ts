@@ -28,7 +28,11 @@ export class AuthController {
   })
   @Post('login')
   signIn(@Body() signInDto: AuthDto) {
-    return this.authService.singIn(signInDto);
+    try {
+      return this.authService.singIn(signInDto);
+    } catch (error) {
+      return error;
+    }
   }
 
   @ApiOperation({ summary: 'Register' })

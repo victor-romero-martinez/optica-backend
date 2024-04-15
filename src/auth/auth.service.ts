@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as bcrypt from 'bcrypt';
 import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 import { AuthDto } from './dto/auth-login.dto';
@@ -21,34 +22,49 @@ export class AuthService {
   async singIn({ email, password }: AuthDto) {
     const user = await this.userRepo.findOneBy({ email });
 
-    if (!user || user.password !== password) {
-      return new UnauthorizedException();
+    if (!user) {
+      throw new UnauthorizedException();
     }
+
+    const isMatchPass = await bcrypt.compare(password, user.password);
+
+    if (!isMatchPass) {
+      throw new UnauthorizedException(
+        'Email or password do not match. Please try again.',
+      );
+    }
+
     const token = await this.jwtService.signAsync({
       sub: user.id,
       email: user.email,
       name: user.name,
       role: user.role,
     });
+
     return { token };
   }
 
   /** register a user */
-  async register(registerDto: AuthDto) {
+  async register({ email, password }: AuthDto) {
+    const rounds = 10;
+    const hash = await bcrypt.hash(password, rounds);
+
     const userIsAlready = await this.userRepo.findOneBy({
-      email: registerDto.email,
+      email,
     });
     if (userIsAlready) {
       throw new ConflictException('Email is already exist.');
     }
-    const newUser = this.userRepo.create(registerDto);
+    const newUser = this.userRepo.create({ email, password: hash });
     const createdUser = await this.userRepo.save(newUser);
+
     const token = await this.jwtService.signAsync({
       sub: createdUser.id,
       email: createdUser.email,
       name: createdUser.name,
       role: createdUser.role,
     });
+
     return { token };
   }
 }
