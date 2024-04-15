@@ -1,5 +1,20 @@
-import { Body, Controller, Delete, Get, Param, Patch } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { AuthGuard } from 'src/auth/auth.guard';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
@@ -35,21 +50,28 @@ export class UsersController {
     }
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Update a user.' })
   @ApiResponse({
     status: 200,
     description: 'User updated.',
     type: User,
   })
+  @UseGuards(AuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  update(
+    @Request() req,
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
     try {
-      return this.usersService.update(+id, updateUserDto);
+      return this.usersService.update(req.user.email, +id, updateUserDto);
     } catch (error) {
       return error;
     }
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete a user.' })
   @ApiResponse({
     status: 200,

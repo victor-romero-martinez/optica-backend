@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -23,8 +27,11 @@ export class UsersService {
     return user;
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
+  async update(emailReq: string, id: number, updateUserDto: UpdateUserDto) {
     const user = await this.findOne(id);
+    if (user.email !== emailReq) {
+      throw new UnauthorizedException();
+    }
     const updated = this.userRepo.merge(user, updateUserDto);
     return await this.userRepo.save(user);
   }

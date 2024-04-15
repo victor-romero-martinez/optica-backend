@@ -6,7 +6,12 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto/auth-login.dto';
@@ -54,6 +59,7 @@ export class AuthController {
     }
   }
 
+  @ApiBearerAuth()
   @UseGuards(AuthGuard)
   @Get('profile')
   getProfile(@Request() req) {
