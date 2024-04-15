@@ -60,7 +60,11 @@ export class CategoriesController {
   })
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.categoriesService.findOne(+id);
+    try {
+      return this.categoriesService.findOne(+id);
+    } catch (error) {
+      return error;
+    }
   }
 
   @ApiOperation({ summary: 'Update a category.' })
@@ -74,7 +78,11 @@ export class CategoriesController {
     @Param('id') id: string,
     @Body() updateCategoryDto: UpdateCategoryDto,
   ) {
-    return this.categoriesService.update(+id, updateCategoryDto);
+    try {
+      return this.categoriesService.update(+id, updateCategoryDto);
+    } catch (error) {
+      return error;
+    }
   }
 
   @ApiOperation({ summary: 'Remove a category.' })
@@ -84,6 +92,10 @@ export class CategoriesController {
   })
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.categoriesService.remove(+id);
+    try {
+      return this.categoriesService.remove(+id);
+    } catch (error) {
+      return error;
+    }
   }
 }

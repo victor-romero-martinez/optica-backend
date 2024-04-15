@@ -75,7 +75,6 @@ export class ProductsController {
       +take,
       +skip,
     );
-
     return { result, limit: +take, offset: result.length };
   }
 
@@ -87,7 +86,11 @@ export class ProductsController {
   })
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return await this.productsService.findOne(+id);
+    try {
+      return await this.productsService.findOne(+id);
+    } catch (error) {
+      return error;
+    }
   }
 
   @ApiOperation({ summary: 'Update a product.' })
@@ -99,7 +102,11 @@ export class ProductsController {
   @ApiBody({ type: Product })
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-    return this.productsService.update(+id, updateProductDto);
+    try {
+      return this.productsService.update(+id, updateProductDto);
+    } catch (error) {
+      return error;
+    }
   }
 
   @ApiOperation({ summary: 'Remove a product.' })
@@ -109,6 +116,10 @@ export class ProductsController {
   })
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.productsService.remove(+id);
+    try {
+      return this.productsService.remove(+id);
+    } catch (error) {
+      return error;
+    }
   }
 }

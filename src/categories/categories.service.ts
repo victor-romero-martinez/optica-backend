@@ -36,9 +36,9 @@ export class CategoriesService {
     });
   }
 
-  /** get a category */
+  /** get a category by id*/
   async findOne(id: number) {
-    const category = this.categoryRepo.findOne({
+    const category = await this.categoryRepo.findOne({
       where: { id },
       relations: { products: true },
       select: {
@@ -53,7 +53,7 @@ export class CategoriesService {
       },
     });
     if (!category) {
-      return new NotFoundException(`Category #${id} was not found.`);
+      throw new NotFoundException(`Category #${id} was not found.`);
     }
     return category;
   }
@@ -62,7 +62,7 @@ export class CategoriesService {
   async update(id: number, updateCategoryDto: UpdateCategoryDto) {
     const updated = await this.categoryRepo.update({ id }, updateCategoryDto);
     if (updated.affected === 0) {
-      return new NotFoundException(`Category #${id} failed update.`);
+      throw new NotFoundException(`Category #${id} failed update.`);
     }
 
     return await this.findOne(id);
@@ -72,7 +72,7 @@ export class CategoriesService {
   async remove(id: number) {
     const deleted = await this.categoryRepo.delete({ id });
     if (deleted.affected === 0) {
-      return new NotFoundException(`Category #${id} was not found.`);
+      throw new NotFoundException(`Category #${id} was not found.`);
     }
     return { message: `Successfully removes a #${id} category` };
   }

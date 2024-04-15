@@ -37,14 +37,14 @@ export class ProductsService {
   }
 
   /** find a product */
-  async findOne(id: number) {
+  async findOne(id: number, includeRelations = true) {
     const productFounded = await this.productRepo.findOne({
       where: {
         id,
       },
       relations: {
         // @ts-expect-error: Should expect FindOptionsRelations<Category>
-        category: true,
+        category: includeRelations,
       },
       select: {
         // @ts-expect-error: Should expect FindOptionsRelations<Category>
@@ -55,7 +55,7 @@ export class ProductsService {
     });
 
     if (!productFounded) {
-      return new NotFoundException(`Product #${id} was not found.`);
+      throw new NotFoundException(`Product #${id} was not found.`);
     }
 
     return productFounded;
@@ -63,7 +63,7 @@ export class ProductsService {
 
   /** find by category id */
   async findByCategoryId(id: number, take: number, skip: number) {
-    const productFounded = await this.productRepo.find({
+    const categoryFounded = await this.productRepo.find({
       where: {
         categoryId: id,
       },
@@ -71,15 +71,12 @@ export class ProductsService {
       skip,
     });
 
-    return productFounded;
+    return categoryFounded;
   }
 
   /** update a product */
   async update(id: number, updateProductDto: UpdateProductDto) {
-    const product = await this.productRepo.findOneBy({ id });
-    if (!product) {
-      return new NotFoundException(`Product #${id} failed update.`);
-    }
+    const product = await this.findOne(id, false);
     Object.assign(product, updateProductDto);
     return await this.productRepo.save(product);
   }
@@ -88,7 +85,7 @@ export class ProductsService {
   async remove(id: number) {
     const isDeleted = await this.productRepo.delete(id);
     if (isDeleted.affected === 0) {
-      return new NotFoundException(`Product #${id} was not found.`);
+      throw new NotFoundException(`Product #${id} was not found.`);
     }
     return { message: `Product removed #${id} successfully.` };
   }

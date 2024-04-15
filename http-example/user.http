@@ -2,7 +2,7 @@ GET http://localhost:3000/users HTTP/1.1
 ###
 
 # find one by id
-GET http://localhost:3000/users/10 HTTP/1.1
+GET http://localhost:3000/users/3 HTTP/1.1
 ###
 
 # create a user
@@ -17,11 +17,11 @@ Content-Type: application/json
 ###
 
 # update a user 
-PATCH http://localhost:3000/users/2
+PATCH http://localhost:3000/users/3
 Content-Type: application/json
 
 {
-  "name": "updated 2"
+  "name": "melko"
 }
 ###
 
