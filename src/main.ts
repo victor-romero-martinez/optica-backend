@@ -9,6 +9,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   // swagger config
   const config = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle('Glasses 👓')
     .setDescription('Best store of glasses.')
     .setVersion('0.0.1')

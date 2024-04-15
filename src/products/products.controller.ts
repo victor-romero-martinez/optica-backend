@@ -10,12 +10,15 @@ import {
   Query,
 } from '@nestjs/common';
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiOperation,
   ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { Roles } from 'src/roles/roles.decorator';
+import { Role } from 'src/roles/roles.enum';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
@@ -26,6 +29,7 @@ import { ProductsService } from './products.service';
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Create a new product.' })
   @ApiResponse({
     status: 201,
@@ -33,6 +37,7 @@ export class ProductsController {
     type: Product,
   })
   @Post()
+  @Roles(Role.Admin)
   create(@Body() createProductDto: CreateProductDto) {
     return this.productsService.create(createProductDto);
   }
@@ -93,6 +98,7 @@ export class ProductsController {
     }
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Update a product.' })
   @ApiResponse({
     status: 200,
@@ -101,6 +107,7 @@ export class ProductsController {
   })
   @ApiBody({ type: Product })
   @Patch(':id')
+  @Roles(Role.Admin)
   update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
     try {
       return this.productsService.update(+id, updateProductDto);
@@ -109,6 +116,7 @@ export class ProductsController {
     }
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Remove a product.' })
   @ApiResponse({
     status: 200,
@@ -120,6 +128,7 @@ export class ProductsController {
     },
   })
   @Delete(':id')
+  @Roles(Role.Admin)
   remove(@Param('id') id: string) {
     try {
       return this.productsService.remove(+id);
