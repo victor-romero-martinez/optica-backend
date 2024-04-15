@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 
@@ -12,11 +11,6 @@ export class UsersService {
     private readonly userRepo: Repository<User>,
   ) {}
 
-  async create(createUserDto: CreateUserDto) {
-    const user = this.userRepo.create(createUserDto);
-    return await this.userRepo.save(user);
-  }
-
   async findAll() {
     return this.userRepo.find();
   }
@@ -24,16 +18,13 @@ export class UsersService {
   async findOne(id: number) {
     const user = await this.userRepo.findOneBy({ id });
     if (!user) {
-      return new NotFoundException(`User #${id} couldn't found.`);
+      throw new NotFoundException(`User #${id} couldn't found.`);
     }
     return user;
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
-    const user = await this.userRepo.findOneBy({ id });
-    if (!user) {
-      return new NotFoundException(`User #${id} couldn't found.`);
-    }
+    const user = await this.findOne(id);
     const updated = this.userRepo.merge(user, updateUserDto);
     return await this.userRepo.save(user);
   }
