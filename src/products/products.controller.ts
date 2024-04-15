@@ -113,6 +113,11 @@ export class ProductsController {
   @ApiResponse({
     status: 200,
     description: 'Operation result.',
+    schema: {
+      example: {
+        message: 'string',
+      },
+    },
   })
   @Delete(':id')
   remove(@Param('id') id: string) {

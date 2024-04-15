@@ -89,6 +89,11 @@ export class CategoriesController {
   @ApiResponse({
     status: 200,
     description: 'Operation message.',
+    schema: {
+      example: {
+        message: 'string',
+      },
+    },
   })
   @Delete(':id')
   remove(@Param('id') id: string) {
