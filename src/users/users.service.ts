@@ -36,11 +36,15 @@ export class UsersService {
     return await this.userRepo.save(user);
   }
 
-  async remove(id: number) {
-    const user = await this.userRepo.delete({ id });
-    if (user.affected === 0) {
+  async remove(idReq: number, id: number) {
+    const userTarget = await this.findOne(id);
+    if (userTarget.id !== idReq) {
+      throw new UnauthorizedException();
+    }
+    const userDeleted = await this.userRepo.delete({ id });
+    if (userDeleted.affected === 0) {
       return new NotFoundException(`User #${id} couldn't found.`);
     }
-    return { message: `Deleted successfully #${id}` };
+    return { message: `Deleted successfully`, user: userTarget };
   }
 }

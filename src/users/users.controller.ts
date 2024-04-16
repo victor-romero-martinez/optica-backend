@@ -82,8 +82,9 @@ export class UsersController {
       },
     },
   })
+  @UseGuards(AuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  remove(@Request() req, @Param('id') id: string) {
+    return this.usersService.remove(req.user.id, +id);
   }
 }
