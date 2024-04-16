@@ -27,3 +27,5 @@ Content-Type: application/json
 
 # remove a user
 DELETE http://localhost:3000/users/1 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoibGFsemF0emF2QGxlbGxvLmd1IiwibmFtZSI6bnVsbCwicm9sZSI6InVzZXIiLCJpYXQiOjE3MTMyOTg3ODYsImV4cCI6MTcxMzU1Nzk4Nn0.LR-vemn0r6eacApjsrk4kuMFLE9L_w_egk9bZfECf9w
