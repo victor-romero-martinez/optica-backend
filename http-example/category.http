@@ -29,4 +29,6 @@ Content-Type: application/json
 
 # delete a category 
 # [warning] FOREIGN KEY 
-DELETE http://localhost:3000/categories/10 HTTP/1.1
+DELETE http://localhost:3000/categories/5 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoicG9yZHVjQGJ1LnZpIiwibmFtZSI6bnVsbCwicm9sZSI6InVzZXIiLCJpYXQiOjE3MTMyODE3NTAsImV4cCI6MTcxMzU0MDk1MH0.UcgUU422NwZ8tgDTPGCBexFD8l3VE-WXlE1spuHkbCI
