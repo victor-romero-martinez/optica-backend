@@ -11,7 +11,7 @@ import { RolesGuard } from './roles/roles.guard';
 import { User } from './users/entities/user.entity';
 import { UsersModule } from './users/users.module';
 
-const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD, ENDPOINT_ID } = process.env;
+const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD, PORT, SSL } = process.env;
 
 @Module({
   imports: [
@@ -21,8 +21,8 @@ const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD, ENDPOINT_ID } = process.env;
       database: PGDATABASE,
       username: PGUSER,
       password: PGPASSWORD,
-      port: 5432,
-      ssl: true,
+      port: +PORT,
+      ssl: !!SSL,
       synchronize: true,
       entities: [Product, Category, User],
     }),
