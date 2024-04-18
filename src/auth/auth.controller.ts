@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
+  ApiBody,
   ApiOperation,
   ApiResponse,
   ApiTags,
@@ -21,7 +22,16 @@ import { AuthDto } from './dto/auth-login.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  /** get session token */
   @ApiOperation({ summary: 'Get session token.' })
+  @ApiBody({
+    schema: {
+      example: {
+        email: 'sobolo@kok.gd',
+        password: 'secure#Pass1',
+      },
+    },
+  })
   @ApiResponse({
     status: 200,
     description: 'Generate a session token.',
@@ -40,7 +50,16 @@ export class AuthController {
     }
   }
 
+  /** register and get session token */
   @ApiOperation({ summary: 'Register' })
+  @ApiBody({
+    schema: {
+      example: {
+        email: 'sobolo@kok.gd',
+        password: 'secure#Pass1',
+      },
+    },
+  })
   @ApiResponse({
     status: 201,
     description: 'Register and get session token.',
@@ -59,6 +78,7 @@ export class AuthController {
     }
   }
 
+  /** view token content */
   @ApiBearerAuth()
   @UseGuards(AuthGuard)
   @Get('profile')
