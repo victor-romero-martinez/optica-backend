@@ -58,7 +58,7 @@ export class ProductsController {
     const take = limit ?? '10';
     const skip = offset ?? '0';
     const result = await this.productsService.findAll(+take, +skip);
-    return { result, limit: +take, offset: result.length };
+    return { ...result, limit: +take, offset: result.product.length };
   }
 
   @ApiOperation({ summary: 'Get product by category id.' })

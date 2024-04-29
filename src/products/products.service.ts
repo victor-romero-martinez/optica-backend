@@ -20,20 +20,43 @@ export class ProductsService {
 
   /** get all products */
   async findAll(take: number, skip: number) {
-    return await this.productRepo.find({
+    const [product, count] = await this.productRepo.findAndCount({
       take,
       skip,
       relations: {
+        style: true,
+        // @ts-expect-error: Should expect FindOptionsRelations<Brand>
+        brand: true,
         // @ts-expect-error: Should expect FindOptionsRelations<Category>
         category: true,
       },
       select: {
-        // @ts-expect-error: Should expect FindOptionsRelations<Category>
+        id: true,
+        name: true,
+        images: true,
+        prices: {
+          price: true,
+          discount: true,
+          currency: true,
+        },
+        style: {
+          id: true,
+          name: true,
+        },
+        // @ts-expect-error: Should expect FindOptionsSelect<Brand>
+        brand: {
+          id: true,
+          name: true,
+        },
+        // @ts-expect-error: Should expect FindOptionsSelect<Category>
         category: {
+          id: true,
           name: true,
         },
       },
     });
+
+    return { product, total: count };
   }
 
   /** find a product */
@@ -47,7 +70,7 @@ export class ProductsService {
         category: includeRelations,
       },
       select: {
-        // @ts-expect-error: Should expect FindOptionsRelations<Category>
+        // @ts-expect-error: Should expect FindOptionsSelect<Category>
         category: {
           name: true,
         },

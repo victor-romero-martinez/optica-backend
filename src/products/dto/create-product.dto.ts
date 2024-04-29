@@ -78,4 +78,16 @@ export class CreateProductDto {
   @IsNotEmpty()
   @IsPositive()
   categoryId: number;
+
+  @ApiProperty()
+  @IsNumber()
+  @IsNotEmpty()
+  @IsPositive()
+  brandId: number;
+
+  @ApiProperty()
+  @IsNumber()
+  @IsNotEmpty()
+  @IsPositive()
+  styleId: number;
 }
