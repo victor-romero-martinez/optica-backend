@@ -17,10 +17,12 @@ GET http://localhost:3000/products/category?id=10&limit=10&offset=0 HTTP/1.1
 # create a new country
 POST http://localhost:3000/products HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoicG9yZHVjQGJ1LnZpIiwibmFtZSI6InBvcmR1YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTcxMzQ1NDIwMiwiZXhwIjoxNzEzNzEzNDAyfQ.5EswLVu8WSky45m19ExoCB0hffXFlATDzza8K2SVGg0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoicG9yZHVjQGJ1LnZpIiwibmFtZSI6InBvcmR1YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTcxNDQzMDMyMywiZXhwIjoxNzE0Njg5NTIzfQ.bA0jeCwsH6770mSL8b10NyFxpXuTi_irJcm5tUyAhew
 
 {
   "categoryId": 1,
+  "brandId": 2,
+  "styleId": 1,
   "name": "product 1",
   "description": "description",
   "images": ["http://li.it/na", "http://paujic.mx/honip"],
