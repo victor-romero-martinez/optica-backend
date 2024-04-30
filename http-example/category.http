@@ -1,8 +1,8 @@
 GET http://localhost:3000/categories HTTP/1.1
 ###
 
-# limit by query [TODO]
-GET http://localhost:3000/categories?products=1 HTTP/1.1
+# limit by query
+GET http://localhost:3000/categories?products=false HTTP/1.1
 ###
 
 # find one by id
