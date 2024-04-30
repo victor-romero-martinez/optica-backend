@@ -1,0 +1,32 @@
+# get all brands
+GET http://localhost:3000/brands HTTP/1.1
+###
+
+# find one by id
+GET http://localhost:3000/brands/2 HTTP/1.1
+###
+
+# create a new brand
+POST http://localhost:3000/brands HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoicG9yZHVjQGJ1LnZpIiwibmFtZSI6InBvcmR1YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTcxNDQ4ODcyOCwiZXhwIjoxNzE0NzQ3OTI4fQ.k0Eka8pz2e2U9-BqleHnlwtrZdvsOf1Wsg-BHznevg4
+
+{
+  "name": "new brand"
+}
+###
+
+# update brand
+PATCH http://localhost:3000/brands/3
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoicG9yZHVjQGJ1LnZpIiwibmFtZSI6InBvcmR1YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTcxNDQ4ODcyOCwiZXhwIjoxNzE0NzQ3OTI4fQ.k0Eka8pz2e2U9-BqleHnlwtrZdvsOf1Wsg-BHznevg4
+
+{
+  "name": "update"
+}
+###
+
+# delete brand
+DELETE http://localhost:3000/brands/4 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoicG9yZHVjQGJ1LnZpIiwibmFtZSI6InBvcmR1YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTcxNDQ4ODcyOCwiZXhwIjoxNzE0NzQ3OTI4fQ.k0Eka8pz2e2U9-BqleHnlwtrZdvsOf1Wsg-BHznevg4

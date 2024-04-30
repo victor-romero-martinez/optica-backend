@@ -70,8 +70,18 @@ export class ProductsService {
         category: includeRelations,
       },
       select: {
+        style: {
+          id: true,
+          name: true,
+        },
+        // @ts-expect-error: Should expect FindOptionsSelect<Brand>
+        brand: {
+          id: true,
+          name: true,
+        },
         // @ts-expect-error: Should expect FindOptionsSelect<Category>
         category: {
+          id: true,
           name: true,
         },
       },
