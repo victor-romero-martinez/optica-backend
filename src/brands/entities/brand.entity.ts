@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Product } from 'src/products/entities/product.entity';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -23,7 +24,7 @@ export class Brand {
   updatedAt: Date;
 
   @ApiProperty()
-  @Column({ type: 'time', default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn()
   createdAt: Date;
 
   @OneToMany(() => Product, (product) => product.brand)

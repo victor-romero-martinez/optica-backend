@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -33,6 +34,6 @@ export class User {
   updatedAt: Date;
 
   @ApiProperty()
-  @Column({ type: 'date', default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn()
   createdAt: Date;
 }

@@ -4,6 +4,7 @@ import { Category } from 'src/categories/entities/category.entity';
 import { Style } from 'src/styles/entities/style.entity';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -50,7 +51,7 @@ export class Product {
   updatedAt: Date;
 
   @ApiProperty()
-  @Column({ type: 'time', default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn()
   createdAt: Date;
 
   @ApiProperty()
