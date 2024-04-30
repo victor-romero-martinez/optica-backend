@@ -85,9 +85,53 @@ export class ProductsController {
       +skip,
     );
     return {
-      result,
+      ...result,
       limit: +take,
-      offset: result.categoryFounded.length,
+      offset: result.products.length,
+    };
+  }
+
+  @ApiOperation({ summary: 'Get product by brand id.' })
+  @ApiQuery({ name: 'limit', required: false })
+  @ApiQuery({ name: 'offset', required: false })
+  @Get('/brand')
+  async findByBrandId(
+    @Query('id') id: string,
+    @Query('limit') limit: string,
+    @Query('offset') offset: string,
+  ) {
+    if (!id) {
+      return new NotFoundException(`Brand #${id} was not found.`);
+    }
+    const take = limit ?? '10';
+    const skip = offset ?? '0';
+    const result = await this.productsService.findByBrandId(+id, +take, +skip);
+    return {
+      ...result,
+      limit: +take,
+      offset: result.products.length,
+    };
+  }
+
+  @ApiOperation({ summary: 'Get product by style id.' })
+  @ApiQuery({ name: 'limit', required: false })
+  @ApiQuery({ name: 'offset', required: false })
+  @Get('/style')
+  async findByStyleId(
+    @Query('id') id: string,
+    @Query('limit') limit: string,
+    @Query('offset') offset: string,
+  ) {
+    if (!id) {
+      return new NotFoundException(`Style #${id} was not found.`);
+    }
+    const take = limit ?? '10';
+    const skip = offset ?? '0';
+    const result = await this.productsService.findByStyleId(+id, +take, +skip);
+    return {
+      ...result,
+      limit: +take,
+      offset: result.products.length,
     };
   }
 

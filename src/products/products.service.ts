@@ -5,6 +5,29 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
 
+const responseField = {
+  id: true,
+  name: true,
+  images: true,
+  prices: {
+    price: true,
+    discount: true,
+    currency: true,
+  },
+  style: {
+    id: true,
+    name: true,
+  },
+  brand: {
+    id: true,
+    name: true,
+  },
+  category: {
+    id: true,
+    name: true,
+  },
+};
+
 @Injectable()
 export class ProductsService {
   constructor(
@@ -31,30 +54,8 @@ export class ProductsService {
         // @ts-expect-error: Should expect FindOptionsRelations<Category>
         category: true,
       },
-      select: {
-        id: true,
-        name: true,
-        images: true,
-        prices: {
-          price: true,
-          discount: true,
-          currency: true,
-        },
-        style: {
-          id: true,
-          name: true,
-        },
-        // @ts-expect-error: Should expect FindOptionsSelect<Brand>
-        brand: {
-          id: true,
-          name: true,
-        },
-        // @ts-expect-error: Should expect FindOptionsSelect<Category>
-        category: {
-          id: true,
-          name: true,
-        },
-      },
+      // @ts-expect-error: Should expect FindOptionsSelect
+      select: responseField,
     });
 
     return { product, total: count };
@@ -97,16 +98,71 @@ export class ProductsService {
 
   /** find by category id */
   async findByCategoryId(id: number, take: number, skip: number) {
-    const [categoryFounded, count] = await this.productRepo.findAndCount({
+    const [products, count] = await this.productRepo.findAndCount({
       where: {
         categoryId: id,
       },
+      relations: {
+        style: true,
+        // @ts-expect-error: Should expect FindOptionsRelations<Brand>
+        brand: true,
+        // @ts-expect-error: Should expect FindOptionsRelations<Category>
+        category: true,
+      },
+      // @ts-expect-error: Should expect FindOptionsSelect
+      select: responseField,
       order: { id: 'ASC' },
       take,
       skip,
     });
 
-    return { categoryFounded, total: count };
+    return { products, total: count };
+  }
+
+  /** find by brand id */
+  async findByBrandId(id: number, take: number, skip: number) {
+    const [products, count] = await this.productRepo.findAndCount({
+      where: {
+        brandId: id,
+      },
+      relations: {
+        style: true,
+        // @ts-expect-error: Should expect FindOptionsRelations<Brand>
+        brand: true,
+        // @ts-expect-error: Should expect FindOptionsRelations<Category>
+        category: true,
+      },
+      // @ts-expect-error: Should expect FindOptionsSelect
+      select: responseField,
+      order: { id: 'ASC' },
+      take,
+      skip,
+    });
+
+    return { products, total: count };
+  }
+
+  /** find by style id */
+  async findByStyleId(id: number, take: number, skip: number) {
+    const [products, count] = await this.productRepo.findAndCount({
+      where: {
+        categoryId: id,
+      },
+      relations: {
+        style: true,
+        // @ts-expect-error: Should expect FindOptionsRelations<Brand>
+        brand: true,
+        // @ts-expect-error: Should expect FindOptionsRelations<Category>
+        category: true,
+      },
+      // @ts-expect-error: Should expect FindOptionsSelect
+      select: responseField,
+      order: { id: 'ASC' },
+      take,
+      skip,
+    });
+
+    return { products, total: count };
   }
 
   /** update a product */
