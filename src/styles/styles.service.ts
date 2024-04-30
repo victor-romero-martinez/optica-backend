@@ -1,26 +1,50 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateStyleDto } from './dto/create-style.dto';
 import { UpdateStyleDto } from './dto/update-style.dto';
+import { Style } from './entities/style.entity';
 
 @Injectable()
 export class StylesService {
-  create(createStyleDto: CreateStyleDto) {
-    return 'This action adds a new style';
+  constructor(
+    @InjectRepository(Style)
+    private readonly styleRepo: Repository<Style>,
+  ) {}
+
+  /** create new style */
+  async create(createStyleDto: CreateStyleDto) {
+    const style = this.styleRepo.create(createStyleDto);
+    return await this.styleRepo.save(style);
   }
 
-  findAll() {
-    return `This action returns all styles`;
+  /** find all styles */
+  async findAll() {
+    return await this.styleRepo.find({ order: { id: 'ASC' } });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} style`;
+  async findOne(id: number) {
+    const style = await this.styleRepo.findOneBy({ id });
+    if (!style) {
+      throw new NotFoundException(`Style ${id} not found.`);
+    }
+    return style;
   }
 
-  update(id: number, updateStyleDto: UpdateStyleDto) {
-    return `This action updates a #${id} style`;
+  /** update style */
+  async update(id: number, updateStyleDto: UpdateStyleDto) {
+    const updated = await this.styleRepo.update({ id }, updateStyleDto);
+    if (updated.affected === 0) {
+      throw new NotFoundException(`Failed update id: ${id} isn't found.`);
+    }
+    return await this.findOne(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} style`;
+  async remove(id: number) {
+    const deleted = await this.styleRepo.delete({ id });
+    if (deleted.affected === 0) {
+      throw new NotFoundException(`Error removes style id: ${id}.`);
+    }
+    return { message: `Successfully removes a #${id} style` };
   }
 }
