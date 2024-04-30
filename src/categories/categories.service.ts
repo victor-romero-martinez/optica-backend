@@ -39,20 +39,7 @@ export class CategoriesService {
 
   /** get a category by id*/
   async findOne(id: number) {
-    const category = await this.categoryRepo.findOne({
-      where: { id },
-      relations: { products: true },
-      select: {
-        products: {
-          id: true,
-          name: true,
-          description: true,
-          characteristics: true,
-          prices: { price: true, discount: true, currency: true },
-          images: true,
-        },
-      },
-    });
+    const category = await this.categoryRepo.findOneBy({ id });
     if (!category) {
       throw new NotFoundException(`Category #${id} was not found.`);
     }
