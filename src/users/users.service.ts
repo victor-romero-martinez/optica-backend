@@ -24,10 +24,19 @@ export class UsersService {
     private readonly userRepo: Repository<User>,
   ) {}
 
-  async findAll() {
-    return this.userRepo.find({ select: responseSelect });
+  /** find all users [TODO] add  pagination */
+  async findAll(take: number, skip: number) {
+    const [users, count] = await this.userRepo.findAndCount({
+      select: responseSelect,
+      order: { id: 'ASC' },
+      take,
+      skip,
+    });
+
+    return { users, total: count };
   }
 
+  /** find a user */
   async findOne(id: number) {
     const user = await this.userRepo.findOne({
       where: { id },
@@ -39,6 +48,7 @@ export class UsersService {
     return user;
   }
 
+  /** update a user */
   async update(emailReq: string, id: number, updateUserDto: UpdateUserDto) {
     const user = await this.userRepo.findOneBy({ id });
     if (user.email !== emailReq) {
@@ -49,6 +59,7 @@ export class UsersService {
     return await this.userRepo.save(updated);
   }
 
+  /** delete a user */
   async remove(idReq: number, id: number) {
     const userTarget = await this.findOne(id);
     if (userTarget.id !== idReq) {

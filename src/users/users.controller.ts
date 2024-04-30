@@ -5,12 +5,14 @@ import {
   Get,
   Param,
   Patch,
+  Query,
   Request,
   UseGuards,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOperation,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -30,9 +32,21 @@ export class UsersController {
     description: 'All users.',
     type: [User],
   })
+  @ApiQuery({ name: 'limit', required: false })
+  @ApiQuery({ name: 'offset', required: false })
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  async findAll(
+    @Query('limit') limit: string,
+    @Query('offset') offset: string,
+  ) {
+    const take = limit ?? '10';
+    const skip = offset ?? '0';
+    const users = await this.usersService.findAll(+take, +skip);
+    return {
+      ...users,
+      limit: +take,
+      offset: users.users.length,
+    };
   }
 
   @ApiOperation({ summary: 'Find a user.' })
