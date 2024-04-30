@@ -23,6 +23,7 @@ export class CategoriesService {
     const showRelations = products === 1 ? true : false;
     return await this.categoryRepo.find({
       relations: { products: showRelations },
+      order: { id: 'ASC' },
       select: {
         products: {
           id: true,

@@ -23,6 +23,7 @@ export class ProductsService {
     const [product, count] = await this.productRepo.findAndCount({
       take,
       skip,
+      order: { id: 'ASC' },
       relations: {
         style: true,
         // @ts-expect-error: Should expect FindOptionsRelations<Brand>
@@ -96,15 +97,16 @@ export class ProductsService {
 
   /** find by category id */
   async findByCategoryId(id: number, take: number, skip: number) {
-    const categoryFounded = await this.productRepo.find({
+    const [categoryFounded, count] = await this.productRepo.findAndCount({
       where: {
         categoryId: id,
       },
+      order: { id: 'ASC' },
       take,
       skip,
     });
 
-    return categoryFounded;
+    return { categoryFounded, total: count };
   }
 
   /** update a product */
